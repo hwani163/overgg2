@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html data-ng-app="app">
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <%# angular CDN%>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="searchControll">
+    <table border="1">
+        <tr>
+            <th>유저이름</th>
+            <th>레벨</th>
+            <th>승률</th>
+            <th>승리</th>
+            <th>패배</th>
+            <th>총겜수</th>
+            <th>총플레이시간</th>
+            <th>아바타</th>
+        </tr>
+        <tr>
+            <td>{{result.username}}</td>
+            <td>{{result.level}}</td>
+            <td>{{result.games.win_percentage}}</td>
+            <td>{{result.games.wins}}</td>
+            <td>{{result.games.lost}}</td>
+            <td>{{result.games.played}}</td>
+            <td>{{result.playtime}}</td>
+            <td><img src="{{result.avatar}}"></td>
+        </tr>
+
+    </table>
+
+    <div>
+        <span>징크스</span>
+        <span>4.5평점</span>
+        <span></span>
+
+    </div>
+
+
+
+
+
+    <form ng-submit="search()">
+        <input ng-model="tagName"/>
+        <button type="submit">검색</button>
+    </form>
+
+</div>
+
+
+
+
+
+<script>
+    // 기본적인 앱에 대해 설정
+    var app = angular.module('app', []);
+
+    //검색
+    app.controller('searchControll', function ($scope, $http) {
+
+        $scope.search = function() {
+
+            var sendParams = {'tagName':$scope.tagName};
+
+            console.log(sendParams);
+
+            $http.post("/profile", sendParams).success(function(resData, status) {
+
+                console.log(resData);
+                $scope.result = resData.data;
+
+            });
+        }
+    })
+</script>
+
+</body>
+</html>
